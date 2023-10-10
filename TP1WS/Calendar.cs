@@ -45,7 +45,7 @@ namespace TP1WS
         {
             string baseString = month.ToString() + " " + year;
             if (baseString.Length >= 20) return baseString;
-            decimal numberOfSpaces = (20 - baseString.Length) / 2;
+            decimal numberOfSpaces = (20 - baseString.Length) / 2m;
             return new string(' ',(int)Math.Floor(numberOfSpaces)) + baseString + new string(' ',(int)Math.Ceiling(numberOfSpaces));
         }
 
