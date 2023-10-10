@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 
 namespace TP1WS
 {
@@ -12,12 +13,48 @@ namespace TP1WS
             int[,] daysInSlots = GetListOfDays(month, year);
             StringBuilder calendar = new StringBuilder();
             calendar.AppendLine("┌────────────────────┐");
-            calendar.AppendLine("│" + PadMiddle(month, year) + "│");
+            calendar.AppendLine("│" + PadMiddle(month, year, 20) + "│");
             calendar.AppendLine("├──┬──┬──┬──┬──┬──┬──┤");
-            calendar.AppendLine("│Su|Mo|Tu|We|Th|Fr|Sa│");
+            calendar.AppendLine("│Su│Mo│Tu│We│Th│Fr│Sa│");
             PlaceDays(calendar, daysInSlots);
             calendar.AppendLine("└──┴──┴──┴──┴──┴──┴──┘");
             return calendar.ToString();
+        }
+
+        internal static string GetTexViewOfCalendarWithSpecialDays(Month month, int year, int[] events)
+        {
+            int[,] daysInSlots = GetListOfDays(month, year);
+            StringBuilder calendar = new StringBuilder();
+            calendar.AppendLine("┌──────────────────────────────────┐");
+            calendar.AppendLine("│" + PadMiddle(month, year, 34) + "│");
+            calendar.AppendLine("├────┬────┬────┬────┬────┬────┬────┤");
+            calendar.AppendLine("│ Su │ Mo │ Tu │ We │ Th │ Fr │ Sa │");
+            PlaceDaysWithEvents(calendar, daysInSlots, events);
+            calendar.AppendLine("└────┴────┴────┴────┴────┴────┴────┘");
+            return calendar.ToString();
+        }
+
+        private static void PlaceDaysWithEvents(StringBuilder calendar, int[,] daysInSlots, int[] events)
+        {
+            for (int row = 0; row < 6; row++)
+            {
+                calendar.AppendLine("├────┼────┼────┼────┼────┼────┼────┤");
+                for (int day = 0; day < 7; day++)
+                {
+                    string numberDisplay;
+                    if (daysInSlots[row, day] == 0) 
+                        numberDisplay = " -- ";
+                    else
+                    {
+                        if (events.Contains(daysInSlots[row, day]))
+                            numberDisplay = "!" + daysInSlots[row,day]+"!";
+                        else
+                            numberDisplay = " "+daysInSlots[row,day].ToString("D2")+" ";
+                    }
+                    calendar.Append("│" + numberDisplay);
+                }
+                calendar.AppendLine("│");
+            }
         }
 
         /// <summary>
@@ -34,18 +71,18 @@ namespace TP1WS
                 {
                     calendar.Append("│" + (daysInSlots[row, day] == 0 ? "--" : daysInSlots[row, day].ToString("D2")));
                 }
-                calendar.AppendLine("|");
+                calendar.AppendLine("│");
             }
         }
 
         /// <summary>
         /// Centers the header of the calendar (Month + Year)
         /// </summary>
-        private static string PadMiddle(Month month, int year)
+        private static string PadMiddle(Month month, int year,int size)
         {
             string baseString = month.ToString() + " " + year;
-            if (baseString.Length >= 20) return baseString; //Max width is 22 characters. Taking the borders, the header has a space of 20 chars max. If more, whoops!
-            decimal numberOfSpaces = (20 - baseString.Length) / 2m;
+            if (baseString.Length >= size) return baseString;
+            decimal numberOfSpaces = (size - baseString.Length) / 2m;
             return new string(' ', (int)Math.Floor(numberOfSpaces)) + baseString + new string(' ', (int)Math.Ceiling(numberOfSpaces));
         }
 

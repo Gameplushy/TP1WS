@@ -22,6 +22,41 @@ namespace TP1WS
             return CalendarGraphics.GetTexViewOfCalendar(givenMonth, monthAndYearNumerals[1]);
         }
 
+        public static string CreateCalendarWithSpecialDates(string monthAndYear, List<string> specialDates)
+        {
+            string? errorMessage = ValidateMonthAndYear(monthAndYear);
+            if (errorMessage != null)
+                return errorMessage;
+            errorMessage = ValidateSpecialDates(specialDates);
+            if (errorMessage != null)
+                return errorMessage;
+            int[] monthAndYearNumerals = monthAndYear.Split('/').Select(int.Parse).ToArray();
+            int[] events = GetImportantDates(specialDates, monthAndYearNumerals);
+            Enum.TryParse<Month>(monthAndYearNumerals[0].ToString(), out Month givenMonth);
+            return CalendarGraphics.GetTexViewOfCalendarWithSpecialDays(givenMonth, monthAndYearNumerals[1], events);
+        }
+
+        private static int[] GetImportantDates(List<string> specialDates, int[] monthAndYearNumerals)
+        {
+            List<DateTime> dates = specialDates.Select(DateTime.Parse).ToList();
+            return dates.Where(d => d.Month == monthAndYearNumerals[0] && d.Year == monthAndYearNumerals[1]).Select(d=> d.Day).ToArray();
+        }
+
+        private static string? ValidateSpecialDates(List<string> specialDates)
+        {
+            foreach(string specialDate in specialDates)
+            {
+                if (!Regex.IsMatch(specialDate, @"^\d{1,2}\/\d{1,2}\/\d+$"))
+                    return specialDate + " : Date format is wrong.";
+                string[] dateNumerals = specialDate.Split('/').ToArray();
+                if (!int.TryParse(dateNumerals[2], out _))
+                    return specialDate + " : This is not a correct year. It must land in the int range.";
+                if (!DateTime.TryParse(specialDate, out _))
+                    return specialDate + "Date is incorrect.";
+            }
+            return null;
+        }
+
         /// <summary>
         /// Validates the format and validity of the month and year
         /// </summary>
