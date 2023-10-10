@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System.Globalization;
 using System.Text;
 
 namespace TP1WS
@@ -33,7 +32,7 @@ namespace TP1WS
         {
             for(int row=0;row<6;row++)
             {
-                calendar.Append("├──┼──┼──┼──┼──┼──┼──┤");
+                calendar.AppendLine("├──┼──┼──┼──┼──┼──┼──┤");
                 for(int day = 0; day < 7; day++)
                 {
                     calendar.Append("│" + (daysInSlots[row, day] == 0 ? "--" : daysInSlots[row, day].ToString("D2")));
@@ -59,7 +58,7 @@ namespace TP1WS
             dayIndex = (int)startDate.DayOfWeek;
             for(int i=1;  i <= daysInMonth; i++)
             {
-                res[dayIndex, weekIndex] = i;
+                res[weekIndex, dayIndex] = i;
                 dayIndex++;
                 if (dayIndex == 7)
                 {
