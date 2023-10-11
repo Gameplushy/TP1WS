@@ -50,7 +50,8 @@ namespace TP1WS
         /// <returns>Array of the days of relevant events</returns>
         private static int[] GetImportantDates(List<string> specialDates, int[] monthAndYearNumerals)
         {
-            List<DateTime> dates = specialDates.Select(DateTime.Parse).ToList();
+            List<int[]> numerals = specialDates.Select(d => d.Split("/").Select(int.Parse).ToArray()).ToList();
+            List<DateTime> dates = numerals.Select(d => new DateTime(d[2], d[1], d[0])).ToList();
             return dates.Where(d => d.Month == monthAndYearNumerals[0] && d.Year == monthAndYearNumerals[1]).Select(d=> d.Day).ToArray();
         }
 

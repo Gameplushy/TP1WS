@@ -74,7 +74,7 @@ namespace TP1WS
                     else
                     {
                         if (events.Contains(daysInSlots[row, day]))
-                            numberDisplay = "!" + daysInSlots[row,day]+"!";
+                            numberDisplay = "!" + daysInSlots[row, day].ToString("D2") +"!";
                         else
                             numberDisplay = " "+daysInSlots[row,day].ToString("D2")+" ";
                     }
