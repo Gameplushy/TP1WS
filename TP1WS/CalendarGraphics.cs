@@ -21,6 +21,27 @@ namespace TP1WS
             return calendar.ToString();
         }
 
+        /// <summary>
+        /// Creates the days part of the calendar
+        /// </summary>
+        /// <param name="calendar">The StringBuilder already used for creating the calendar</param>
+        /// <param name="daysInSlots">A 2D array with the day numbers in the corresponding weeks and days</param>
+        private static void PlaceDays(StringBuilder calendar, int[,] daysInSlots)
+        {
+            for (int row = 0; row < 6; row++)
+            {
+                calendar.AppendLine("├──┼──┼──┼──┼──┼──┼──┤");
+                for (int day = 0; day < 7; day++)
+                {
+                    calendar.Append("│" + (daysInSlots[row, day] == 0 ? "--" : daysInSlots[row, day].ToString("D2")));
+                }
+                calendar.AppendLine("│");
+            }
+        }
+
+        /// <summary>
+        /// Creates the graphic calendar of the chosen month and year, while highlighting special events
+        /// </summary>
         internal static string GetTexViewOfCalendarWithSpecialDays(Month month, int year, int[] events)
         {
             int[,] daysInSlots = GetListOfDays(month, year);
@@ -34,6 +55,12 @@ namespace TP1WS
             return calendar.ToString();
         }
 
+        /// <summary>
+        /// Creates the days part of the calendar with events
+        /// </summary>
+        /// <param name="calendar">The StringBuilder already used for creating the calendar</param>
+        /// <param name="daysInSlots">A 2D array with the day numbers in the corresponding weeks and days</param>
+        /// <param name="events">The day numbers with events</param>
         private static void PlaceDaysWithEvents(StringBuilder calendar, int[,] daysInSlots, int[] events)
         {
             for (int row = 0; row < 6; row++)
@@ -52,24 +79,6 @@ namespace TP1WS
                             numberDisplay = " "+daysInSlots[row,day].ToString("D2")+" ";
                     }
                     calendar.Append("│" + numberDisplay);
-                }
-                calendar.AppendLine("│");
-            }
-        }
-
-        /// <summary>
-        /// Creates the days part of the calendar
-        /// </summary>
-        /// <param name="calendar">The StringBuilder already used for creating the calendar</param>
-        /// <param name="daysInSlots">A 2D array with the day numbers in the corresponding weeks and days</param>
-        private static void PlaceDays(StringBuilder calendar, int[,] daysInSlots)
-        {
-            for (int row = 0; row < 6; row++)
-            {
-                calendar.AppendLine("├──┼──┼──┼──┼──┼──┼──┤");
-                for (int day = 0; day < 7; day++)
-                {
-                    calendar.Append("│" + (daysInSlots[row, day] == 0 ? "--" : daysInSlots[row, day].ToString("D2")));
                 }
                 calendar.AppendLine("│");
             }

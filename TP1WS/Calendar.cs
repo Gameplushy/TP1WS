@@ -3,7 +3,7 @@
 namespace TP1WS
 {
     /// <summary>
-    /// Main class, called by the user. Currently, only CreateCalendar exists.
+    /// Main class, called by the user. Also contains validation and filtering methods.
     /// </summary>
     public static class Calendar
     {
@@ -22,6 +22,12 @@ namespace TP1WS
             return CalendarGraphics.GetTexViewOfCalendar(givenMonth, monthAndYearNumerals[1]);
         }
 
+        /// <summary>
+        /// Returns an ASCII art graphic of the selected month and year, while highlighting special events occuring this month.
+        /// </summary>
+        /// <param name="monthAndYear">Must follow the format MM/YYYY. Year must be positive.</param>
+        /// <param name="specialDates">List of dates that follow the format DD/MM/YYYY. Year must be positive.</param>
+        /// <returns>Either the calendar view or an error message if the input's format was wrong.</returns>
         public static string CreateCalendarWithSpecialDates(string monthAndYear, List<string> specialDates)
         {
             string? errorMessage = ValidateMonthAndYear(monthAndYear);
@@ -36,12 +42,23 @@ namespace TP1WS
             return CalendarGraphics.GetTexViewOfCalendarWithSpecialDays(givenMonth, monthAndYearNumerals[1], events);
         }
 
+        /// <summary>
+        /// Filters out the special dates so that only the ones in the relevant month are kept.
+        /// </summary>
+        /// <param name="specialDates">List of special dates</param>
+        /// <param name="monthAndYearNumerals">Int array [month,year]</param>
+        /// <returns>Array of the days of relevant events</returns>
         private static int[] GetImportantDates(List<string> specialDates, int[] monthAndYearNumerals)
         {
             List<DateTime> dates = specialDates.Select(DateTime.Parse).ToList();
             return dates.Where(d => d.Month == monthAndYearNumerals[0] && d.Year == monthAndYearNumerals[1]).Select(d=> d.Day).ToArray();
         }
 
+        /// <summary>
+        /// Validates the format and validity of the special dates
+        /// </summary>
+        /// <param name="specialDates">User input</param>
+        /// <returns>Error message or null</returns>
         private static string? ValidateSpecialDates(List<string> specialDates)
         {
             foreach(string specialDate in specialDates)
