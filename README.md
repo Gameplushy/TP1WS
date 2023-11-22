@@ -65,5 +65,6 @@ Calendar.CreateCalendarWithSpecialDates("01/5", new List<string>() { "08/01/2002
 
 ## How to install
 
+Use Visual Studio 2022 with DOTNET 7.
 Build the project TP1WS. This will create a dll in the bin of the project. Copy-paste it to your project's bin folder and reference it in order to use it.
 
